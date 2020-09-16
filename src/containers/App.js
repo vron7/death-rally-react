@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import Cards from '../components/Cards';
 import SearchBox from '../components/SearchBox';
 import Scroll from '../components/Scroll'
@@ -6,13 +7,24 @@ import ErrorBoundry from '../components/ErrorBoundry'
 // import {robots} from './robots'
 import './App.css'
 
+import { setSearchField } from '../actions'
+
+const mapStateToProps = state => {
+    return {
+        searchField: state.searchField
+    }
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSearchChange: (event) => dispatch(setSearchField(event.target.value))
+    }
+}
 
 class App extends React.Component{
     constructor(){
         super();
         this.state = {
-            robots: [],
-            searchfield: ''
+            robots: []
         }
     }
     componentDidMount() {
@@ -22,20 +34,22 @@ class App extends React.Component{
         
     }
 
-    onSearch = (event) => {
-        this.setState({ searchfield: event.target.value });
-    }
+    // onSearch = (event) => {
+    //     this.setState({ searchfield: event.target.value });
+    // }
 
     render(){
-        const {robots, searchfield} = this.state;
+        console.log('dbg Render, state? ', this.state, this.props)
+        const { robots } = this.state;
+        const { searchField, onSearchChange } = this.props;
         const filtered = robots.filter((robot) => {
-            return robot.name.toLowerCase().includes(searchfield.toLowerCase());
+            return robot.name.toLowerCase().includes(searchField.toLowerCase());
         })
         return robots.length ?
             (
                 <div className='tc'>
                     <h1 className='f1'>RoboFriends</h1>
-                    <SearchBox searchChange={this.onSearch} />
+                    <SearchBox searchChange={onSearchChange} />
                     <Scroll>
                         <ErrorBoundry>
                             <Cards robots={filtered} />
@@ -50,4 +64,5 @@ class App extends React.Component{
     }
 }
 
-export default App;
+// Connecting App to redux Store
+export default connect(mapStateToProps, mapDispatchToProps)(App);
