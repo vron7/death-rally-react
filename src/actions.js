@@ -10,7 +10,8 @@ export const setSearchField = (text) => ({
     payload: text
 })
 
-// thunk is looking for a function
+// Thunk is looking for a function instead of an action(object)
+// The inner function receives the store methods dispatch and getState as parameters.
 export const requestRobots = () => (dispatch) => {
     dispatch({type: REQUEST_ROBOTS_PENDING});
     fetch('https://jsonplaceholder.typicode.com/users')

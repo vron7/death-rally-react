@@ -10,9 +10,14 @@ import * as serviceWorker from './serviceWorker';
 import { searchRobots, requestRobots } from './reducers'
 import 'tachyons';
 
+// create logging middleware
 const logger = createLogger();
+
+//combine reducers
 const rootReducer = combineReducers({ searchRobots, requestRobots})
-const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, logger)); // middleware is ordered
+
+// store holds state tree of the application
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, logger));
 
 ReactDOM.render(
   // Provider takes care of providing the store to all components in the tree
